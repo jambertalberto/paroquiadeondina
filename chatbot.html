@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Typewith</title>
+  <style>
+    /* Adicione aqui o estilo CSS para personalizar o chatbot */
+  </style>
+</head>
+<body>
+  <div id="chatbot"></div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    const AGENT_ID = '6127eae3-5a0a-4baf-8f12-6f8841151505';
+
+    async function sendMessage(message) {
+      const axiosInstance = axios.create({
+        baseURL: 'https://api.typewith.ai/v1/',
+      });
+
+      try {
+        const response = await axiosInstance.post(`agents/qa/${AGENT_ID}`, { question: message });
+        return response.data.response;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    // Aqui você pode adicionar o código para criar e gerenciar o chatbot na sua página
+    // Exemplo: criar um input e um botão para enviar mensagens e exibir a resposta do chatbot
+
+    const chatbotElement = document.getElementById('chatbot');
+    const inputElement = document.createElement('input');
+    const buttonElement = document.createElement('button');
+    const messagesElement = document.createElement('div');
+
+    inputElement.type = 'text';
+    buttonElement.textContent = 'Enviar';
+    buttonElement.addEventListener('click', async () => {
+      const message = inputElement.value;
+      inputElement.value = '';
+
+      const response = await sendMessage(message);
+      const responseElement = document.createElement('p');
+      responseElement.textContent = response;
+      messagesElement.appendChild(responseElement);
+    });
+
+    chatbotElement.appendChild(messagesElement);
+    chatbotElement.appendChild(inputElement);
+    chatbotElement.appendChild(buttonElement);
+  </script>
+</body>
+</html>
